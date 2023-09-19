@@ -96,6 +96,7 @@ func getSelectors() []types.ConsumerVersionSelector {
 
 func getRequestType() types.VerifyRequest {
 	verify_request := types.VerifyRequest{}
+	fmt.Sprintf(os.Getenv("PACT_URL"))
 	if os.Getenv("PACT_URL") == "" {
 		verify_request = types.VerifyRequest{
 		ProviderBaseURL:            fmt.Sprintf("http://127.0.0.1:%d", port),
@@ -114,7 +115,7 @@ func getRequestType() types.VerifyRequest {
 		verify_request = types.VerifyRequest{
 		ProviderBaseURL:            fmt.Sprintf("http://127.0.0.1:%d", port),
 		BrokerURL:                  fmt.Sprintf(os.Getenv("PACT_BROKER_BASE_URL")),
-		PactURLs:   		    fmt.Sprintf([]string{os.Getenv("PACT_URL")}),
+		PactURLs:   		    []string{os.Getenv("PACT_URL")},
 		BrokerToken:                os.Getenv("PACT_BROKER_TOKEN"),
 		BrokerUsername:             os.Getenv("PACT_BROKER_USERNAME"),
 		BrokerPassword:             os.Getenv("PACT_BROKER_PASSWORD"),
