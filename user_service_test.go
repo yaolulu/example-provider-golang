@@ -18,7 +18,7 @@ func TestPactProvider(t *testing.T) {
 
 
 	// Verify the Provider - fetch pacts from PactFlow
-	_, err := pact.VerifyProvider(t, getgetRequestType())
+	_, err := pact.VerifyProvider(t, getRequestType())
 
 	if err != nil {
 		t.Fatalf("%v", err)
