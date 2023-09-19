@@ -1,9 +1,9 @@
-name: Verify changed pact
+name: contract_requiring_verification_published
 
 on:
   repository_dispatch:
     types:
-      - pact_changed
+      - contract_requiring_verification_published
 
 env:
   PACT_BROKER_BASE_URL: https://cd-dayn-upgrade.pactflow.io
