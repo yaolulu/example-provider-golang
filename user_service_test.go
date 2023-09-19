@@ -51,7 +51,7 @@ var stateHandlers = types.StateHandlers{
 // Starts the provider API with hooks for provider states.
 func startProvider() {
 	router := gin.Default()
-	router.GET("/product/:id", GetProduct)
+	router.GET("/products/:id", GetProduct)
 
 	router.Run(fmt.Sprintf(":%d", port))
 }
