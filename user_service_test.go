@@ -40,7 +40,7 @@ var stateHandlers = types.StateHandlers{
 // Starts the provider API with hooks for provider states.
 func startProvider() {
 	router := gin.Default()
-	router.GET("/product/:id", GetProduct)
+	router.GET("/products/:id", GetProduct)
 
 	router.Run(fmt.Sprintf(":%d", port))
 }
@@ -114,7 +114,7 @@ func getRequestType() types.VerifyRequest {
 		verify_request = types.VerifyRequest{
 		ProviderBaseURL:            fmt.Sprintf("http://127.0.0.1:%d", port),
 		BrokerURL:                  fmt.Sprintf(os.Getenv("PACT_BROKER_BASE_URL")),
-		PactURLs:   		    []string{os.Getenv("PACT_URL")},
+		PactURLs:   		    fmt.Sprintf([]string{os.Getenv("PACT_URL")}),
 		BrokerToken:                os.Getenv("PACT_BROKER_TOKEN"),
 		BrokerUsername:             os.Getenv("PACT_BROKER_USERNAME"),
 		BrokerPassword:             os.Getenv("PACT_BROKER_PASSWORD"),
