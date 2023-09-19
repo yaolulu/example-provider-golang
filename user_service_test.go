@@ -16,20 +16,9 @@ func TestPactProvider(t *testing.T) {
 
 	pact := createPact()
 
+
 	// Verify the Provider - fetch pacts from PactFlow
-	_, err := pact.VerifyProvider(t, types.VerifyRequest{
-		ProviderBaseURL:            fmt.Sprintf("http://127.0.0.1:%d", port),
-		BrokerURL:                  fmt.Sprintf(os.Getenv("PACT_BROKER_BASE_URL")),
-		ConsumerVersionSelectors:   getSelectors(),
-		BrokerToken:                os.Getenv("PACT_BROKER_TOKEN"),
-		BrokerUsername:             os.Getenv("PACT_BROKER_USERNAME"),
-		BrokerPassword:             os.Getenv("PACT_BROKER_PASSWORD"),
-		PublishVerificationResults: envBool("PACT_BROKER_PUBLISH_VERIFICATION_RESULTS"),
-		ProviderVersion:            os.Getenv("GIT_COMMIT"),
-		StateHandlers:              stateHandlers,
-		EnablePending:              envBool("PENDING"),
-		ProviderBranch:             os.Getenv("GIT_BRANCH"),
-	})
+	_, err := pact.VerifyProvider(t, getgetRequestType())
 
 	if err != nil {
 		t.Fatalf("%v", err)
@@ -51,7 +40,7 @@ var stateHandlers = types.StateHandlers{
 // Starts the provider API with hooks for provider states.
 func startProvider() {
 	router := gin.Default()
-	router.GET("/products/:id", GetProduct)
+	router.GET("/product/:id", GetProduct)
 
 	router.Run(fmt.Sprintf(":%d", port))
 }
@@ -103,6 +92,40 @@ func getSelectors() []types.ConsumerVersionSelector {
 	}
 
 	return selectors
+}
+
+func getRequestType() types.VerifyRequest {
+	verrify_request := types.VerifyRequest{}
+	if os.Getenv("PACT_URL") == "" {
+		verify_request = types.VerifyRequest{
+		ProviderBaseURL:            fmt.Sprintf("http://127.0.0.1:%d", port),
+		BrokerURL:                  fmt.Sprintf(os.Getenv("PACT_BROKER_BASE_URL")),
+		ConsumerVersionSelectors:   getSelectors(),
+		BrokerToken:                os.Getenv("PACT_BROKER_TOKEN"),
+		BrokerUsername:             os.Getenv("PACT_BROKER_USERNAME"),
+		BrokerPassword:             os.Getenv("PACT_BROKER_PASSWORD"),
+		PublishVerificationResults: envBool("PACT_BROKER_PUBLISH_VERIFICATION_RESULTS"),
+		ProviderVersion:            os.Getenv("GIT_COMMIT"),
+		StateHandlers:              stateHandlers,
+		EnablePending:              envBool("PENDING"),
+		ProviderBranch:             os.Getenv("GIT_BRANCH"),
+		}
+	} else {
+		verify_request = types.VerifyRequest{
+		ProviderBaseURL:            fmt.Sprintf("http://127.0.0.1:%d", port),
+		BrokerURL:                  fmt.Sprintf(os.Getenv("PACT_BROKER_BASE_URL")),
+		PactURLs:   				os.Getenv("PACT_URL")
+		BrokerToken:                os.Getenv("PACT_BROKER_TOKEN"),
+		BrokerUsername:             os.Getenv("PACT_BROKER_USERNAME"),
+		BrokerPassword:             os.Getenv("PACT_BROKER_PASSWORD"),
+		PublishVerificationResults: envBool("PACT_BROKER_PUBLISH_VERIFICATION_RESULTS"),
+		ProviderVersion:            os.Getenv("GIT_COMMIT"),
+		StateHandlers:              stateHandlers,
+		EnablePending:              envBool("PENDING"),
+		ProviderBranch:             os.Getenv("GIT_BRANCH"),
+		}
+	}
+	return verrify_request
 }
 
 func envBool(k string) bool {
