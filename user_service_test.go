@@ -95,7 +95,7 @@ func getSelectors() []types.ConsumerVersionSelector {
 }
 
 func getRequestType() types.VerifyRequest {
-	verrify_request := types.VerifyRequest{}
+	verify_request := types.VerifyRequest{}
 	if os.Getenv("PACT_URL") == "" {
 		verify_request = types.VerifyRequest{
 		ProviderBaseURL:            fmt.Sprintf("http://127.0.0.1:%d", port),
@@ -125,7 +125,7 @@ func getRequestType() types.VerifyRequest {
 		ProviderBranch:             os.Getenv("GIT_BRANCH"),
 		}
 	}
-	return verrify_request
+	return verify_request
 }
 
 func envBool(k string) bool {
